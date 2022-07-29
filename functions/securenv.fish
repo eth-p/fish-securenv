@@ -469,7 +469,7 @@ function __securenv_command_wrap --description 'wrap a command to always use a s
 
 	# Wrap a command.
 	# (Create a simple passthrough wrapper and let the function wrap do all the work.)
-	if command -vq "$command"
+	if command -vq "$command" && not functions -q "$command"
 		begin
 			printf "function %s --wraps=%s\n" (string escape -- "$command") (string escape -- "$command")
 			printf "	command %s \$argv # <-- securenv wrap (command) \n" (string escape -- "$command")
