@@ -27,8 +27,10 @@ function __securenv_storage_provider_gpg --no-scope-shadowing
 	# Run the actions.
 	switch "$_securenv_storage_action"
 		case "list"
-			printf "%s\n" "$securenv_gpg_store"/* \
-				| sed 's/.*\/\(.*\)$/\1/'
+			set -l varfile
+			for varfile in "$securenv_gpg_store"/*
+				echo "$varfile"
+			end | sed 's/.*\/\(.*\)$/\1/'
 
 		case "read"
 			gpg --quiet --skip-verify --batch --yes --trust-model always \
