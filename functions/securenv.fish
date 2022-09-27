@@ -79,6 +79,37 @@ function __securenv_command_list --description 'list the names of all the secure
 	return 0
 end
 
+function __securenv_command_supported --description 'check if securenv is supported'	
+	argparse 'provider' 'q/quiet' -- $argv || return $status
+	
+	if test (count $argv) -ne 0
+		echo "securenv: incorrect usage for 'supported' subcommand"
+		echo "usage:"
+		printf "    securenv read \x1B[4mVARIABLE\x1B[24m\n"
+		return 2
+	end 1>&2
+	
+	if test -z "$_flag_provider"
+		set _flag_provider "$securenv_provider"
+	end
+
+	set -l _securenv_storage_action 'supported'
+	"__securenv_storage_provider_$_flag_provider"
+	if test $status -eq 13
+		if test -z "$_flag_quiet"
+			echo "unsupported"
+		end
+
+		return 1
+	end
+
+	if test -z "$_flag_quiet"
+		echo "supported"
+	end
+
+	return 0
+end
+
 
 # =============================================================================
 # Subcommands: Apply

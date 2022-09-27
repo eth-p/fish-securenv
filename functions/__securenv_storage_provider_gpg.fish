@@ -10,6 +10,8 @@
 
 function __securenv_storage_provider_gpg --no-scope-shadowing
 	test -d "$securenv_gpg_store" || mkdir -p "$securenv_gpg_store" || return 1
+	command -vq gpg || return 13
+
 	set -l storefile "$securenv_gpg_store/$_securenv_storage_entry"
 
 	# Get the user email address.
@@ -60,7 +62,10 @@ function __securenv_storage_provider_gpg --no-scope-shadowing
 
 		case "help:config"
 			printf "%s\t%s\n" "securenv_gpg_user"  "the email to use for encrypting entries"
-			printf "%s\t%s\n" "securenv_gpg_store" "the directory where securenv entries are stored"
+			printf "%s\t%s\n" "securenv_gpg_store" "the directory where securenv entries are stored"o
+
+		case "supported"
+			return 0
 
 		case "*"
 			set _error "unsupported action: $_securenv_storage_action"
