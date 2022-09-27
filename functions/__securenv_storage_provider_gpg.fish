@@ -29,7 +29,7 @@ function __securenv_storage_provider_gpg --no-scope-shadowing
 		case "list"
 			set -l varfile
 			for varfile in "$securenv_gpg_store"/*
-				echo "$varfile"
+				printf "%s\n" "$varfile"
 			end | sed 's/.*\/\(.*\)$/\1/'
 
 		case "read"
