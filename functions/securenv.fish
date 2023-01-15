@@ -235,6 +235,11 @@ function __securenv_command_list-applied --description 'list the names of all th
 		echo "Applied entries:"
 	end
 
+	set -l printf_ignore_flags "--"
+	if test (printf $printf_ignore_flags "check") = "--"
+		set printf_ignore_flags
+	end
+
 	for applied in $__securenv_applied_entries
 		set info (string split '=' -- "$applied")
 		set applied_as    "$info[1]"
@@ -248,7 +253,7 @@ function __securenv_command_list-applied --description 'list the names of all th
 			set_color $fish_color_command
 			printf "set "
 			set_color $fish_color_param
-			printf -- "-gx %s " "$applied_as"
+			printf $printf_ignore_flags "-gx %s " "$applied_as"
 			set_color $fish_color_operator
 			printf "("
 			set_color $fish_color_command
